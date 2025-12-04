@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ restaurant.name }} - Menú{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-2">{{ restaurant.name }}</h1>
+        <p class="text-gray-600 flex items-center">
+            <i class="fas fa-map-marker-alt text-[#004270] mr-2"></i>
+            {{ restaurant.address }}
+        </p>
+        <div class="text-gray-500 text-sm mt-1">
+            <i class="fas fa-clock mr-1"></i>
+            {{ restaurant.opening_time|time:"H:i" }} - {{ restaurant.closing_time|time:"H:i" }}
+        </div>
+    </div>
+
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-semibold">Menú</h2>
+        <a href="{% url 'view_cart' %}" class="bg-[#004270] text-white px-4 py-2 rounded-lg hover:bg-[#5C97C8] transition font-medium">
+            Ver Carrito
+        </a>
+    </div>
+
+    {% if products %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in products %}
+        <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition p-5">
+            <div class="flex items-start justify-between mb-3">
+                <h3 class="font-bold text-lg">{{ product.name }}</h3>
+                {% if product.availability %}
+                <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">Disponible</span>
+                {% else %}
+                <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-500">No disponible</span>
+                {% endif %}
+            </div>
+            <p class="text-gray-600 text-sm mb-4">{{ product.description|truncatewords:20 }}</p>
+            <div class="flex items-center justify-between">
+                <span class="text-xl font-bold text-[#004270]">${{ product.price }}</span>
+                {% if product.availability %}
+                <a href="{% url 'add_to_cart' product.id %}" class="bg-[#004270] text-white px-3 py-2 rounded-lg hover:bg-[#5C97C8] transition text-sm font-medium">
+                    Agregar al carrito
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-16 bg-white rounded-xl shadow-sm">
+        <i class="fas fa-utensils text-gray-400 text-6xl mb-4"></i>
+        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Aún no hay platillos</h3>
+        <p class="text-gray-500">Vuelve más tarde para ver nuevas opciones.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
