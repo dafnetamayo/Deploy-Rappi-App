@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}Entrar{% endblock %}
+
+{% block content %}
+<h1>Entrar</h1>
+<form method="post" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div>
+    <label for="id_login">Email o usuario</label>
+    {{ form.login }}
+    {{ form.login.errors }}
+  </div>
+  <div>
+    <label for="id_password">Password</label>
+    {{ form.password }}
+    {{ form.password.errors }}
+  </div>
+  <button type="submit">Entrar</button>
+</form>
+
+<hr>
+<a href="{% provider_login_url 'google' %}">Entrar con Google</a>
+{% endblock %}

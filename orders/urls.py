@@ -11,7 +11,7 @@ urlpatterns = [
     path('logout/', views.cerrar_sesion, name='logout'),
     path('registro/', views.registro, name='registro'),
     path('perfil/', views.perfil, name='perfil'),
-    path('activate/<int:user_id>/', views.activate_account, name='activate_account'),
+    path('activate/<int:user_id>/<str:token>/', views.activate_account, name='activate_account'),
     # Carrito por sesión
     path('cart/', views.view_cart, name='view_cart'),
     path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),

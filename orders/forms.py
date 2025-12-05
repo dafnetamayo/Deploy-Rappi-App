@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from .models import Order
 
 
 class RegistroForm(forms.ModelForm):
@@ -49,4 +50,36 @@ class RegistroForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class CheckoutForm(forms.Form):
+    delivery_address = forms.CharField(
+        label='Dirección de entrega',
+        widget=forms.Textarea(attrs={
+            'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#004270]',
+            'rows': 3,
+            'placeholder': 'Ingresa la dirección completa de entrega',
+            'required': True
+        }),
+        help_text='Por favor ingresa la dirección completa incluyendo calles, número, colonia, código postal y referencias.'
+    )
+    
+    payment_method = forms.ChoiceField(
+        label='Método de pago',
+        choices=Order.PAYMENT_METHOD_CHOICES,
+        widget=forms.RadioSelect(attrs={
+            'class': 'mt-1',
+        }),
+        initial='cash'
+    )
+    
+    comments = forms.CharField(
+        label='Instrucciones adicionales (opcional)',
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#004270]',
+            'rows': 2,
+            'placeholder': 'Ej: Llamar antes de llegar, timbre azul, etc.'
+        })
+    )
 

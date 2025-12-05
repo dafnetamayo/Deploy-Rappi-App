@@ -1,0 +1,23 @@
+{% load static %}
+{% load socialaccount %}
+{% load account %}
+
+<!doctype html>
+<html>
+  <body>
+    <h1>Home</h1>
+
+    {% if user.is_authenticated %}
+      <p>Hola, {{ user.username }} |
+         <a href="{% url 'account_logout' %}">Salir</a> |
+         <a href="/api/me/">Mi perfil</a>
+      </p>
+    {% else %}
+      <p>
+        <a id="lnk-login"  href="{% url 'account_login' %}">Entrar</a> |
+        <a id="lnk-signup" href="{% url 'account_signup' %}">Registro</a> |
+        <a id="lnk-google" href="{% provider_login_url 'google' %}">Continuar con Google</a>
+      </p>
+    {% endif %}
+  </body>
+</html>
